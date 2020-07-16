@@ -1,4 +1,4 @@
-package domain
+package core
 
 import "time"
 
@@ -13,7 +13,7 @@ type (
 
 	// Config -
 	Config struct {
-		ProfileName    string
+		On             string
 		SerialNumber   string
 		DurationSecond int64
 

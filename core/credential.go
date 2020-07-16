@@ -1,10 +1,10 @@
-package domain
+package core
 
 type (
 	// Cred -
 	Cred struct {
-		ProfileName     string
 		AccessKeyID     string
 		SecretAccessKey string
+		SessionToken    string
 	}
 )
