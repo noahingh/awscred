@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/fsnotify/fsnotify"
-	"github.com/hanjunlee/awsmonkey/core"
+	"github.com/hanjunlee/awscred/core"
 	"github.com/sirupsen/logrus"
 )
 
@@ -45,7 +45,7 @@ func (i *Interactor) runWorker(ctx context.Context) {
 		}
 
 		if err := i.reflect(); err != nil {
-			i.log.Error("failed to reflect: %s", err)
+			i.log.Errorf("failed to reflect: %s", err)
 		}
 	}
 }
@@ -59,7 +59,7 @@ func (i *Interactor) reflect() error {
 
 	confs, err := i.confHandler.Read()
 	if err != nil {
-		return fmt.Errorf("failed to read the awsmockey config file: %s", err)
+		return fmt.Errorf("failed to read the awscred config file: %s", err)
 	}
 
 	reflected := make(map[string]core.Cred)
@@ -73,13 +73,14 @@ func (i *Interactor) reflect() error {
 
 		if t, err := strconv.ParseBool(conf.On); err != nil || !t {
 			reflected[profile] = orig
+			continue
 		}
 
 		reflected[profile] = mapConfigToCred(conf)
 	}
 
 	if err := i.credHandler.Write(reflected); err != nil {
-		return fmt.Errorf("failed to write the awsmockey credential file")
+		return fmt.Errorf("failed to write the awscred credential file")
 	}
 
 	return nil

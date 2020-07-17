@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/fsnotify/fsnotify"
-	"github.com/hanjunlee/awsmonkey/core"
+	"github.com/hanjunlee/awscred/core"
 )
 
 type (
