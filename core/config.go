@@ -3,8 +3,8 @@ package core
 import "time"
 
 type (
-	// Cache -
-	Cache struct {
+	// SessionToken -
+	SessionToken struct {
 		AccessKeyID     string
 		SecretAccessKey string
 		SessionToken    string
@@ -13,10 +13,10 @@ type (
 
 	// Config -
 	Config struct {
-		On             string
+		On             bool
 		SerialNumber   string
 		DurationSecond int64
 
-		Cache Cache
+		Cache SessionToken
 	}
 )

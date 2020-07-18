@@ -12,6 +12,44 @@ import (
 	reflect "reflect"
 )
 
+// MockSessionTokenGenerator is a mock of SessionTokenGenerator interface
+type MockSessionTokenGenerator struct {
+	ctrl     *gomock.Controller
+	recorder *MockSessionTokenGeneratorMockRecorder
+}
+
+// MockSessionTokenGeneratorMockRecorder is the mock recorder for MockSessionTokenGenerator
+type MockSessionTokenGeneratorMockRecorder struct {
+	mock *MockSessionTokenGenerator
+}
+
+// NewMockSessionTokenGenerator creates a new mock instance
+func NewMockSessionTokenGenerator(ctrl *gomock.Controller) *MockSessionTokenGenerator {
+	mock := &MockSessionTokenGenerator{ctrl: ctrl}
+	mock.recorder = &MockSessionTokenGeneratorMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockSessionTokenGenerator) EXPECT() *MockSessionTokenGeneratorMockRecorder {
+	return m.recorder
+}
+
+// Generate mocks base method
+func (m *MockSessionTokenGenerator) Generate(arg0 core.Cred, arg1 core.Config, arg2 string) (core.SessionToken, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Generate", arg0, arg1, arg2)
+	ret0, _ := ret[0].(core.SessionToken)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Generate indicates an expected call of Generate
+func (mr *MockSessionTokenGeneratorMockRecorder) Generate(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generate", reflect.TypeOf((*MockSessionTokenGenerator)(nil).Generate), arg0, arg1, arg2)
+}
+
 // MockFileWatcher is a mock of FileWatcher interface
 type MockFileWatcher struct {
 	ctrl     *gomock.Controller
@@ -97,6 +135,20 @@ func (m *MockCredFileHandler) Write(arg0 map[string]core.Cred) error {
 func (mr *MockCredFileHandlerMockRecorder) Write(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Write", reflect.TypeOf((*MockCredFileHandler)(nil).Write), arg0)
+}
+
+// Remove mocks base method
+func (m *MockCredFileHandler) Remove() error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Remove")
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Remove indicates an expected call of Remove
+func (mr *MockCredFileHandlerMockRecorder) Remove() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Remove", reflect.TypeOf((*MockCredFileHandler)(nil).Remove))
 }
 
 // MockConfigFileHandler is a mock of ConfigFileHandler interface

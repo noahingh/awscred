@@ -8,6 +8,10 @@ import (
 )
 
 type (
+	// SessionTokenGenerator generate the secure cred.
+	SessionTokenGenerator interface {
+		Generate(core.Cred, core.Config, string) (core.SessionToken, error)
+	}
 	// FileWatcher send a event when the file has a operation.
 	FileWatcher interface {
 		Watch(context.Context, chan<- fsnotify.Event)
@@ -17,6 +21,7 @@ type (
 	CredFileHandler interface {
 		Read() (map[string]core.Cred, error)
 		Write(map[string]core.Cred) error
+		Remove() error
 	}
 
 	// ConfigFileHandler is the manager read and write a config file.

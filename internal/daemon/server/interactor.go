@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"fmt"
-	"strconv"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/hanjunlee/awscred/core"
@@ -14,6 +13,7 @@ type (
 	// Interactor manage the credential file and the config file.
 	Interactor struct {
 		ch              chan fsnotify.Event
+		stGenerator     SessionTokenGenerator
 		watcher         FileWatcher
 		origCredHandler CredFileHandler
 		credHandler     CredFileHandler
@@ -71,7 +71,7 @@ func (i *Interactor) reflect() error {
 			continue
 		}
 
-		if t, err := strconv.ParseBool(conf.On); err != nil || !t {
+		if !conf.On {
 			reflected[profile] = orig
 			continue
 		}
@@ -81,6 +81,155 @@ func (i *Interactor) reflect() error {
 
 	if err := i.credHandler.Write(reflected); err != nil {
 		return fmt.Errorf("failed to write the awscred credential file")
+	}
+
+	return nil
+}
+
+// Terminate stop to watch the original credential file and remove the reflected credential file.
+func (i *Interactor) Terminate() error {
+	close(i.ch)
+	return i.credHandler.Remove()
+}
+
+// On set the profile enabled.
+func (i *Interactor) On(profile string) error {
+	_, ok, err := i.GetOriginalCred(profile)
+	if err != nil {
+		return err
+	}
+	if ok != true {
+		return fmt.Errorf("there's no such a profile: %s", profile)
+	}
+
+	config, ok, err := i.GetConfig(profile)
+	if err != nil {
+		return err
+	}
+	config.On = true
+
+	if err := i.SetConfig(profile, config); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Off set the profile disabled.
+func (i *Interactor) Off(profile string) error {
+	_, ok, err := i.GetOriginalCred(profile)
+	if err != nil {
+		return err
+	}
+	if ok != true {
+		return fmt.Errorf("there's no such a profile: %s", profile)
+	}
+
+	config, ok, err := i.GetConfig(profile)
+	if err != nil {
+		return err
+	}
+	config.On = false
+
+	if err := i.SetConfig(profile, config); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Gen generate the secure token from STS.
+func (i *Interactor) Gen(profile, token string) error {
+	cred, ok, err := i.GetOriginalCred(profile)
+	if err != nil {
+		return err
+	}
+	if ok != true {
+		return fmt.Errorf("there's no such a profile: %s", profile)
+	}
+
+	config, ok, err := i.GetConfig(profile)
+	if err != nil {
+		return err
+	}
+	if !config.On {
+		return fmt.Errorf("it's disabled, set the profile enabled: %s", profile)
+	}
+
+	sc, err := i.stGenerator.Generate(cred, config, token)
+	if err != nil {
+		return fmt.Errorf("failed to get the secure credential from STS: %s", err)
+	}
+
+	// cache secure credentail.
+	config.Cache = sc
+	if err := i.SetConfig(profile, config); err != nil {
+		return fmt.Errorf("failed to set the profile")
+	}
+
+	if err := i.SetCred(profile, mapConfigToCred(config)); err != nil {
+		return fmt.Errorf("failed to set the profile")
+	}
+
+	return nil
+}
+
+// GetOriginalCred get the credential of profile.
+func (i *Interactor) GetOriginalCred(profile string) (core.Cred, bool, error) {
+	creds, err := i.origCredHandler.Read()
+	if err != nil {
+		return core.Cred{}, false, err
+	}
+
+	cred, ok := creds[profile]
+	if !ok {
+		return core.Cred{}, false, nil
+	}
+
+	return cred, ok, nil
+}
+
+// SetCred set a new credential for the profile.
+func (i *Interactor) SetCred(profile string, cred core.Cred) error {
+	creds, err := i.credHandler.Read()
+	if err != nil {
+		return err
+	}
+
+	creds[profile] = cred
+
+	if err := i.credHandler.Write(creds); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// GetConfig get the config of profile.
+func (i *Interactor) GetConfig(profile string) (core.Config, bool, error) {
+	configs, err := i.confHandler.Read()
+	if err != nil {
+		return core.Config{}, false, err
+	}
+
+	config, ok := configs[profile]
+	if !ok {
+		return core.Config{}, false, nil
+	}
+
+	return config, ok, nil
+}
+
+// SetConfig set the config of profile.
+func (i *Interactor) SetConfig(profile string, conf core.Config) error {
+	configs, err := i.confHandler.Read()
+	if err != nil {
+		return err
+	}
+
+	configs[profile] = conf
+
+	if err := i.confHandler.Write(configs); err != nil {
+		return err
 	}
 
 	return nil
