@@ -13,7 +13,11 @@ type YamlHandler struct {
 }
 
 // NewYamlHandler create a new yaml handler.
-func NewYamlHandler()
+func NewYamlHandler(path string) *YamlHandler {
+	return &YamlHandler{
+		filepath: path,
+	}
+}
 
 // Read read the configuration file.
 func (h *YamlHandler) Read() (map[string]core.Config, error) {
