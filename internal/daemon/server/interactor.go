@@ -6,6 +6,10 @@ import (
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/hanjunlee/awscred/core"
+	"github.com/hanjunlee/awscred/internal/daemon/pkg/configfile"
+	"github.com/hanjunlee/awscred/internal/daemon/pkg/credfile"
+	"github.com/hanjunlee/awscred/internal/daemon/pkg/credwatcher"
+	"github.com/hanjunlee/awscred/internal/daemon/pkg/sts"
 	"github.com/sirupsen/logrus"
 )
 
@@ -21,6 +25,21 @@ type (
 		log             *logrus.Entry
 	}
 )
+
+// NewInteractor create a new interactor.
+func NewInteractor(origCredPath, credPath, confPath string) *Interactor {
+	ch := make(chan fsnotify.Event, 10)
+
+	return &Interactor{
+		ch:              ch,
+		stGenerator:     sts.NewStsGenerator(),
+		watcher:         credwatcher.NewService(origCredPath),
+		origCredHandler: credfile.NewIniHandler(true, origCredPath),
+		credHandler:     credfile.NewIniHandler(true, credPath),
+		confHandler:     configfile.NewYamlHandler(confPath),
+		log: logrus.NewEntry(logrus.New()),
+	}
+}
 
 // StartWatch start to watch the orignal credential file and
 // reflect changes into the credential file.
@@ -48,6 +67,11 @@ func (i *Interactor) runWorker(ctx context.Context) {
 			i.log.Errorf("failed to reflect: %s", err)
 		}
 	}
+}
+
+// Reflect reflect the original credential file, only for enabled profiles.
+func (i *Interactor) Reflect() error {
+	return i.reflect()
 }
 
 // reflect the original credential file, only for enabled profiles.

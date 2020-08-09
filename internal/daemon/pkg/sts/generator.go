@@ -14,8 +14,13 @@ type (
 	}
 )
 
-// GetSecureCredential return a new profile with the secure credential.
-func (g *Generator) GetSecureCredential(cred core.Cred, conf core.Config, token string) (core.SessionToken, error) {
+// NewStsGenerator create a new session token generator.
+func NewStsGenerator() *Generator {
+	return &Generator{}
+}
+
+// Generate return a new profile with the secure credential.
+func (g *Generator) Generate(cred core.Cred, conf core.Config, token string) (core.SessionToken, error) {
 	sess := session.New(&aws.Config{
 		Credentials: credentials.NewStaticCredentials(cred.AccessKeyID, cred.SecretAccessKey, ""),
 	})

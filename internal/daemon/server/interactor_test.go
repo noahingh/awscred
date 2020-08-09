@@ -488,9 +488,9 @@ func TestInteractor_Gen(t *testing.T) {
 							gomock.Any(),
 						).
 						Return(core.SessionToken{
-							AccessKeyID: "sessionkey",
+							AccessKeyID:     "sessionkey",
 							SecretAccessKey: "sessionsecret",
-							SessionToken: "sessiontoken",
+							SessionToken:    "sessiontoken",
 						}, nil)
 
 					return m
@@ -502,7 +502,7 @@ func TestInteractor_Gen(t *testing.T) {
 						Read().
 						Return(map[string]core.Cred{
 							"profile_0": {
-								AccessKeyID: "key",
+								AccessKeyID:     "key",
 								SecretAccessKey: "secret",
 							},
 						}, nil).
@@ -517,19 +517,19 @@ func TestInteractor_Gen(t *testing.T) {
 						Read().
 						Return(map[string]core.Cred{
 							"profile_0": {
-								AccessKeyID: "key",
+								AccessKeyID:     "key",
 								SecretAccessKey: "secret",
 							},
 						}, nil).
 						AnyTimes()
-					
-				    // after generate the session token.
+
+						// after generate the session token.
 					m.EXPECT().
 						Write(gomock.Eq(map[string]core.Cred{
 							"profile_0": {
-								AccessKeyID: "sessionkey",
+								AccessKeyID:     "sessionkey",
 								SecretAccessKey: "sessionsecret",
-								SessionToken: "sessiontoken",
+								SessionToken:    "sessiontoken",
 							},
 						})).
 						Return(nil)
@@ -543,22 +543,22 @@ func TestInteractor_Gen(t *testing.T) {
 						Read().
 						Return(map[string]core.Config{
 							"profile_0": {
-								On: true,
+								On:           true,
 								SerialNumber: "serial",
 							},
 						}, nil).
 						AnyTimes()
-				
-				    // after generate the session token
+
+						// after generate the session token
 					m.EXPECT().
-				        Write(map[string]core.Config{
+						Write(map[string]core.Config{
 							"profile_0": {
-								On: true,
+								On:           true,
 								SerialNumber: "serial",
 								Cache: core.SessionToken{
-									AccessKeyID: "sessionkey",
+									AccessKeyID:     "sessionkey",
 									SecretAccessKey: "sessionsecret",
-									SessionToken: "sessiontoken",
+									SessionToken:    "sessiontoken",
 								},
 							},
 						})
@@ -568,7 +568,7 @@ func TestInteractor_Gen(t *testing.T) {
 			},
 			args: args{
 				profile: "profile_0",
-				token: "123456",
+				token:   "123456",
 			},
 			wantErr: false,
 		},
