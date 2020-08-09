@@ -12,11 +12,11 @@ service AWSCred {
 
 message SetOnRequest { string profile = 1; }
 
-message SetOnResponse { string message = 1; }
+message SetOnResponse {}
 
 message SetOffRequest { string profile = 1; }
 
-message SetOffResponse { string message = 1; }
+message SetOffResponse {}
 
 message SetConfigRequest {
   string profile = 1;
@@ -24,21 +24,18 @@ message SetConfigRequest {
   int64 duration = 3;
 }
 
-message SetConfigResponse { string message = 1; }
+message SetConfigResponse {}
 
 message SetGenerateRequest {
   string profile = 1;
   string token = 2;
 }
 
-message SetGenerateResponse { string message = 1; }
+message SetGenerateResponse {}
 
 message GetProfileListRequest {}
 
-message GetProfileListResponse {
-  repeated Profile profiles = 1;
-  string errorMessage = 2;
-}
+message GetProfileListResponse { repeated Profile profiles = 1; }
 
 message Profile {
   string name = 1;

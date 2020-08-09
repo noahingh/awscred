@@ -4,8 +4,12 @@
 package awscred
 
 import (
+	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -60,7 +64,6 @@ func (m *SetOnRequest) GetProfile() string {
 }
 
 type SetOnResponse struct {
-	Message              string   `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -90,13 +93,6 @@ func (m *SetOnResponse) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_SetOnResponse proto.InternalMessageInfo
-
-func (m *SetOnResponse) GetMessage() string {
-	if m != nil {
-		return m.Message
-	}
-	return ""
-}
 
 type SetOffRequest struct {
 	Profile              string   `protobuf:"bytes,1,opt,name=profile,proto3" json:"profile,omitempty"`
@@ -138,7 +134,6 @@ func (m *SetOffRequest) GetProfile() string {
 }
 
 type SetOffResponse struct {
-	Message              string   `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -168,13 +163,6 @@ func (m *SetOffResponse) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_SetOffResponse proto.InternalMessageInfo
-
-func (m *SetOffResponse) GetMessage() string {
-	if m != nil {
-		return m.Message
-	}
-	return ""
-}
 
 type SetConfigRequest struct {
 	Profile              string   `protobuf:"bytes,1,opt,name=profile,proto3" json:"profile,omitempty"`
@@ -232,7 +220,6 @@ func (m *SetConfigRequest) GetDuration() int64 {
 }
 
 type SetConfigResponse struct {
-	Message              string   `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -262,13 +249,6 @@ func (m *SetConfigResponse) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_SetConfigResponse proto.InternalMessageInfo
-
-func (m *SetConfigResponse) GetMessage() string {
-	if m != nil {
-		return m.Message
-	}
-	return ""
-}
 
 type SetGenerateRequest struct {
 	Profile              string   `protobuf:"bytes,1,opt,name=profile,proto3" json:"profile,omitempty"`
@@ -318,7 +298,6 @@ func (m *SetGenerateRequest) GetToken() string {
 }
 
 type SetGenerateResponse struct {
-	Message              string   `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -348,13 +327,6 @@ func (m *SetGenerateResponse) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_SetGenerateResponse proto.InternalMessageInfo
-
-func (m *SetGenerateResponse) GetMessage() string {
-	if m != nil {
-		return m.Message
-	}
-	return ""
-}
 
 type GetProfileListRequest struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -389,7 +361,6 @@ var xxx_messageInfo_GetProfileListRequest proto.InternalMessageInfo
 
 type GetProfileListResponse struct {
 	Profiles             []*Profile `protobuf:"bytes,1,rep,name=profiles,proto3" json:"profiles,omitempty"`
-	ErrorMessage         string     `protobuf:"bytes,2,opt,name=errorMessage,proto3" json:"errorMessage,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
 	XXX_unrecognized     []byte     `json:"-"`
 	XXX_sizecache        int32      `json:"-"`
@@ -425,13 +396,6 @@ func (m *GetProfileListResponse) GetProfiles() []*Profile {
 		return m.Profiles
 	}
 	return nil
-}
-
-func (m *GetProfileListResponse) GetErrorMessage() string {
-	if m != nil {
-		return m.ErrorMessage
-	}
-	return ""
 }
 
 type Profile struct {
@@ -522,31 +486,254 @@ func init() {
 func init() { proto.RegisterFile("awscred.proto", fileDescriptor_94e10cbc5c16adca) }
 
 var fileDescriptor_94e10cbc5c16adca = []byte{
-	// 412 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x54, 0x4f, 0xef, 0x93, 0x40,
-	0x10, 0x0d, 0xd0, 0x96, 0x76, 0xfa, 0x27, 0x75, 0xb5, 0x2d, 0xa2, 0xd1, 0x86, 0x13, 0x1a, 0xad,
-	0x49, 0x4d, 0x4c, 0x3c, 0x6a, 0x4d, 0xea, 0x41, 0xa3, 0xc2, 0xc1, 0xab, 0x28, 0x43, 0x83, 0xb6,
-	0xbb, 0xb8, 0xbb, 0x8d, 0x26, 0x7e, 0x56, 0xbf, 0xcb, 0x2f, 0x85, 0x81, 0x40, 0x7f, 0x6d, 0xb8,
-	0xf1, 0x76, 0xde, 0xbe, 0x79, 0x3b, 0xf3, 0x02, 0x8c, 0xa3, 0x3f, 0xea, 0x87, 0xc4, 0x78, 0x95,
-	0x49, 0xa1, 0x05, 0xb3, 0x09, 0x7a, 0x3e, 0x8c, 0x42, 0xd4, 0x9f, 0x78, 0x80, 0xbf, 0x8f, 0xa8,
-	0x34, 0x73, 0xc0, 0xce, 0xa4, 0x48, 0xd2, 0x3d, 0x3a, 0xc6, 0xd2, 0xf0, 0x07, 0x41, 0x09, 0xbd,
-	0x27, 0x30, 0x26, 0xa6, 0xca, 0x04, 0x57, 0x78, 0xa2, 0x1e, 0x50, 0xa9, 0x68, 0x57, 0x51, 0x09,
-	0x96, 0xd4, 0x24, 0x69, 0x57, 0x7d, 0x0a, 0x93, 0x92, 0xda, 0x2a, 0xfb, 0x0d, 0xa6, 0x21, 0xea,
-	0x8d, 0xe0, 0x49, 0xba, 0x6b, 0x55, 0x66, 0x73, 0xe8, 0x29, 0x94, 0x69, 0xb4, 0x77, 0xcc, 0xbc,
-	0x40, 0x88, 0xb9, 0xd0, 0x8f, 0x8f, 0x32, 0xd2, 0xa9, 0xe0, 0x8e, 0xb5, 0x34, 0x7c, 0x2b, 0xa8,
-	0xb0, 0xf7, 0x1c, 0xee, 0xd4, 0x3a, 0xb4, 0x1a, 0x7a, 0x07, 0x2c, 0x44, 0xbd, 0x45, 0x8e, 0x32,
-	0xd2, 0xd8, 0x6e, 0xe9, 0x1e, 0x74, 0xb5, 0xf8, 0x85, 0x9c, 0x1c, 0x15, 0xc0, 0x7b, 0x01, 0x77,
-	0x1b, 0x2a, 0xad, 0x6d, 0x17, 0x30, 0xdb, 0xa2, 0xfe, 0x5c, 0x88, 0x7e, 0x48, 0x95, 0xa6, 0xce,
-	0xde, 0x4f, 0x98, 0x9f, 0x17, 0x48, 0xec, 0x19, 0xf4, 0xc9, 0x84, 0x72, 0x8c, 0xa5, 0xe5, 0x0f,
-	0xd7, 0xd3, 0x55, 0x99, 0x08, 0xe2, 0x07, 0x15, 0x83, 0x79, 0x30, 0x42, 0x29, 0x85, 0xfc, 0x48,
-	0xfd, 0x0b, 0xbb, 0x8d, 0x33, 0xef, 0x1f, 0xd8, 0x74, 0x91, 0x31, 0xe8, 0xf0, 0xe8, 0x50, 0xda,
-	0xcc, 0xbf, 0xd9, 0x04, 0x4c, 0x51, 0xbc, 0xb3, 0x1f, 0x98, 0x82, 0xd7, 0xb6, 0x61, 0x5d, 0xdd,
-	0x46, 0xa7, 0xb9, 0x8d, 0xd3, 0x04, 0xf0, 0x6f, 0x96, 0x4a, 0x8c, 0x9d, 0x6e, 0x31, 0x01, 0x82,
-	0xeb, 0xff, 0x26, 0xd8, 0x6f, 0xbe, 0x86, 0x1b, 0x89, 0x31, 0x7b, 0x05, 0xdd, 0x3c, 0x97, 0x6c,
-	0x56, 0xbd, 0xa8, 0x9e, 0x68, 0x77, 0x7e, 0x7e, 0x4c, 0x23, 0x79, 0x0d, 0xbd, 0x22, 0x79, 0xac,
-	0xc9, 0xa8, 0x52, 0xeb, 0x2e, 0x6e, 0x9d, 0xd3, 0xd5, 0xb7, 0x30, 0xa8, 0x62, 0xc2, 0xee, 0xd7,
-	0x59, 0x8d, 0x70, 0xba, 0xee, 0xa5, 0x12, 0x69, 0xbc, 0x87, 0x61, 0x6d, 0xeb, 0xec, 0x41, 0x9d,
-	0x7a, 0x96, 0x28, 0xf7, 0xe1, 0xe5, 0x22, 0x29, 0x7d, 0x81, 0x49, 0x73, 0xeb, 0xec, 0x71, 0xc5,
-	0xbf, 0x1c, 0x07, 0xf7, 0xd1, 0x55, 0x42, 0xde, 0xf0, 0x7b, 0x2f, 0xff, 0x4b, 0xbc, 0xbc, 0x09,
-	0x00, 0x00, 0xff, 0xff, 0x6d, 0x97, 0x08, 0x0f, 0x36, 0x04, 0x00, 0x00,
+	// 391 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x53, 0x41, 0x4f, 0xe2, 0x50,
+	0x10, 0x4e, 0x5b, 0xa0, 0x30, 0x2c, 0x2c, 0xfb, 0x58, 0xa0, 0xdb, 0xdd, 0xec, 0x92, 0x9e, 0xba,
+	0xc9, 0x86, 0x03, 0x9b, 0x98, 0x78, 0x54, 0x8c, 0x78, 0x30, 0x51, 0xdb, 0x83, 0x57, 0xab, 0x9d,
+	0x9a, 0x46, 0x7c, 0xaf, 0xbe, 0x3e, 0xa2, 0x89, 0xbf, 0xd5, 0xff, 0x62, 0x6c, 0xa7, 0x4d, 0x8b,
+	0x10, 0x6e, 0x7c, 0x33, 0xdf, 0x37, 0xdf, 0x63, 0xe6, 0x2b, 0xf4, 0x82, 0xe7, 0xf4, 0x4e, 0x62,
+	0x38, 0x4b, 0xa4, 0x50, 0x82, 0x99, 0x04, 0x1d, 0x17, 0xbe, 0xf8, 0xa8, 0x2e, 0xb8, 0x87, 0x4f,
+	0x6b, 0x4c, 0x15, 0xb3, 0xc0, 0x4c, 0xa4, 0x88, 0xe2, 0x15, 0x5a, 0xda, 0x54, 0x73, 0x3b, 0x5e,
+	0x01, 0x9d, 0xaf, 0xd0, 0x23, 0x66, 0x9a, 0x08, 0x9e, 0xa2, 0xf3, 0x37, 0x2f, 0x44, 0xd1, 0x7e,
+	0xed, 0x00, 0xfa, 0x05, 0x95, 0xc4, 0x37, 0x30, 0xf0, 0x51, 0x2d, 0x04, 0x8f, 0xe2, 0xfb, 0xbd,
+	0x7a, 0x36, 0x86, 0x56, 0x8a, 0x32, 0x0e, 0x56, 0x96, 0x9e, 0x35, 0x08, 0x31, 0x1b, 0xda, 0xe1,
+	0x5a, 0x06, 0x2a, 0x16, 0xdc, 0x32, 0xa6, 0x9a, 0x6b, 0x78, 0x25, 0x76, 0x86, 0xf0, 0xad, 0xe2,
+	0x40, 0xb6, 0x27, 0xc0, 0x7c, 0x54, 0x4b, 0xe4, 0x28, 0x03, 0x85, 0xfb, 0x8d, 0xbf, 0x43, 0x53,
+	0x89, 0x07, 0xe4, 0xe4, 0x9b, 0x03, 0x67, 0x04, 0xc3, 0xda, 0x14, 0x1a, 0x3e, 0x81, 0xd1, 0x12,
+	0xd5, 0x65, 0x2e, 0x3d, 0x8f, 0x53, 0x45, 0xf3, 0x9d, 0x53, 0x18, 0x6f, 0x36, 0x72, 0x09, 0xfb,
+	0x07, 0x6d, 0xb2, 0x4a, 0x2d, 0x6d, 0x6a, 0xb8, 0xdd, 0xf9, 0x60, 0x56, 0x5c, 0x8a, 0xf8, 0x5e,
+	0xc9, 0x70, 0x5e, 0xc1, 0xa4, 0x22, 0x63, 0xd0, 0xe0, 0xc1, 0x63, 0xf1, 0xde, 0xec, 0x37, 0xeb,
+	0x83, 0x2e, 0xf2, 0x97, 0xb6, 0x3d, 0x5d, 0xf0, 0xca, 0xd6, 0x8c, 0x9d, 0x5b, 0x6b, 0xd4, 0xb7,
+	0xf6, 0xb1, 0x0a, 0x7c, 0x49, 0x62, 0x89, 0xa1, 0xd5, 0xcc, 0x57, 0x41, 0x70, 0xfe, 0xa6, 0x83,
+	0x79, 0x74, 0xed, 0x2f, 0x24, 0x86, 0xec, 0x00, 0x9a, 0x59, 0x16, 0xd8, 0xa8, 0x7c, 0x6d, 0x35,
+	0x45, 0xf6, 0x78, 0xb3, 0x4c, 0x7f, 0xf7, 0x10, 0x5a, 0x79, 0x0e, 0x58, 0x9d, 0x51, 0x66, 0xc8,
+	0x9e, 0x7c, 0xaa, 0x93, 0xf4, 0x18, 0x3a, 0xe5, 0x39, 0xd9, 0x8f, 0x2a, 0xab, 0x16, 0x22, 0xdb,
+	0xde, 0xd6, 0xa2, 0x19, 0x67, 0xd0, 0xad, 0xdc, 0x8d, 0xfd, 0xac, 0x52, 0x37, 0x32, 0x61, 0xff,
+	0xda, 0xde, 0xa4, 0x49, 0x57, 0xd0, 0xaf, 0x5f, 0x94, 0xfd, 0x29, 0xf9, 0xdb, 0x4f, 0x6d, 0xff,
+	0xde, 0x49, 0xc8, 0x0c, 0x6f, 0x5b, 0xd9, 0x97, 0xf9, 0xff, 0x3d, 0x00, 0x00, 0xff, 0xff, 0x00,
+	0xc7, 0x12, 0xc6, 0xaa, 0x03, 0x00, 0x00,
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// AWSCredClient is the client API for AWSCred service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type AWSCredClient interface {
+	SetOn(ctx context.Context, in *SetOnRequest, opts ...grpc.CallOption) (*SetOnResponse, error)
+	SetOff(ctx context.Context, in *SetOffRequest, opts ...grpc.CallOption) (*SetOffResponse, error)
+	SetConfig(ctx context.Context, in *SetConfigRequest, opts ...grpc.CallOption) (*SetConfigResponse, error)
+	SetGenerate(ctx context.Context, in *SetGenerateRequest, opts ...grpc.CallOption) (*SetGenerateResponse, error)
+	GetProfileList(ctx context.Context, in *GetProfileListResponse, opts ...grpc.CallOption) (*GetProfileListRequest, error)
+}
+
+type aWSCredClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewAWSCredClient(cc *grpc.ClientConn) AWSCredClient {
+	return &aWSCredClient{cc}
+}
+
+func (c *aWSCredClient) SetOn(ctx context.Context, in *SetOnRequest, opts ...grpc.CallOption) (*SetOnResponse, error) {
+	out := new(SetOnResponse)
+	err := c.cc.Invoke(ctx, "/awscred.AWSCred/SetOn", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *aWSCredClient) SetOff(ctx context.Context, in *SetOffRequest, opts ...grpc.CallOption) (*SetOffResponse, error) {
+	out := new(SetOffResponse)
+	err := c.cc.Invoke(ctx, "/awscred.AWSCred/SetOff", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *aWSCredClient) SetConfig(ctx context.Context, in *SetConfigRequest, opts ...grpc.CallOption) (*SetConfigResponse, error) {
+	out := new(SetConfigResponse)
+	err := c.cc.Invoke(ctx, "/awscred.AWSCred/SetConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *aWSCredClient) SetGenerate(ctx context.Context, in *SetGenerateRequest, opts ...grpc.CallOption) (*SetGenerateResponse, error) {
+	out := new(SetGenerateResponse)
+	err := c.cc.Invoke(ctx, "/awscred.AWSCred/SetGenerate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *aWSCredClient) GetProfileList(ctx context.Context, in *GetProfileListResponse, opts ...grpc.CallOption) (*GetProfileListRequest, error) {
+	out := new(GetProfileListRequest)
+	err := c.cc.Invoke(ctx, "/awscred.AWSCred/GetProfileList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// AWSCredServer is the server API for AWSCred service.
+type AWSCredServer interface {
+	SetOn(context.Context, *SetOnRequest) (*SetOnResponse, error)
+	SetOff(context.Context, *SetOffRequest) (*SetOffResponse, error)
+	SetConfig(context.Context, *SetConfigRequest) (*SetConfigResponse, error)
+	SetGenerate(context.Context, *SetGenerateRequest) (*SetGenerateResponse, error)
+	GetProfileList(context.Context, *GetProfileListResponse) (*GetProfileListRequest, error)
+}
+
+// UnimplementedAWSCredServer can be embedded to have forward compatible implementations.
+type UnimplementedAWSCredServer struct {
+}
+
+func (*UnimplementedAWSCredServer) SetOn(ctx context.Context, req *SetOnRequest) (*SetOnResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetOn not implemented")
+}
+func (*UnimplementedAWSCredServer) SetOff(ctx context.Context, req *SetOffRequest) (*SetOffResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetOff not implemented")
+}
+func (*UnimplementedAWSCredServer) SetConfig(ctx context.Context, req *SetConfigRequest) (*SetConfigResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetConfig not implemented")
+}
+func (*UnimplementedAWSCredServer) SetGenerate(ctx context.Context, req *SetGenerateRequest) (*SetGenerateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetGenerate not implemented")
+}
+func (*UnimplementedAWSCredServer) GetProfileList(ctx context.Context, req *GetProfileListResponse) (*GetProfileListRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProfileList not implemented")
+}
+
+func RegisterAWSCredServer(s *grpc.Server, srv AWSCredServer) {
+	s.RegisterService(&_AWSCred_serviceDesc, srv)
+}
+
+func _AWSCred_SetOn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetOnRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AWSCredServer).SetOn(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/awscred.AWSCred/SetOn",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AWSCredServer).SetOn(ctx, req.(*SetOnRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AWSCred_SetOff_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetOffRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AWSCredServer).SetOff(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/awscred.AWSCred/SetOff",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AWSCredServer).SetOff(ctx, req.(*SetOffRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AWSCred_SetConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AWSCredServer).SetConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/awscred.AWSCred/SetConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AWSCredServer).SetConfig(ctx, req.(*SetConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AWSCred_SetGenerate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetGenerateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AWSCredServer).SetGenerate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/awscred.AWSCred/SetGenerate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AWSCredServer).SetGenerate(ctx, req.(*SetGenerateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AWSCred_GetProfileList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProfileListResponse)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AWSCredServer).GetProfileList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/awscred.AWSCred/GetProfileList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AWSCredServer).GetProfileList(ctx, req.(*GetProfileListResponse))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _AWSCred_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "awscred.AWSCred",
+	HandlerType: (*AWSCredServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "SetOn",
+			Handler:    _AWSCred_SetOn_Handler,
+		},
+		{
+			MethodName: "SetOff",
+			Handler:    _AWSCred_SetOff_Handler,
+		},
+		{
+			MethodName: "SetConfig",
+			Handler:    _AWSCred_SetConfig_Handler,
+		},
+		{
+			MethodName: "SetGenerate",
+			Handler:    _AWSCred_SetGenerate_Handler,
+		},
+		{
+			MethodName: "GetProfileList",
+			Handler:    _AWSCred_GetProfileList_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "awscred.proto",
 }
