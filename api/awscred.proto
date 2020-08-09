@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package awscred;
+
+service AWSCred {
+  rpc SetOn(SetOnRequest) returns (SetOnResponse);
+  rpc SetOff(SetOffRequest) returns (SetOffResponse);
+  rpc SetConfig(SetConfigRequest) returns (SetConfigResponse);
+  rpc SetGenerate(SetGenerateRequest) returns (SetGenerateResponse);
+  rpc GetProfileList(GetProfileListResponse) returns (GetProfileListRequest);
+}
+
+message SetOnRequest { string profile = 1; }
+
+message SetOnResponse { string message = 1; }
+
+message SetOffRequest { string profile = 1; }
+
+message SetOffResponse { string message = 1; }
+
+message SetConfigRequest {
+  string profile = 1;
+  string serial = 2;
+  int64 duration = 3;
+}
+
+message SetConfigResponse { string message = 1; }
+
+message SetGenerateRequest {
+  string profile = 1;
+  string token = 2;
+}
+
+message SetGenerateResponse { string message = 1; }
+
+message GetProfileListRequest {}
+
+message GetProfileListResponse {
+  repeated Profile profiles = 1;
+  string errorMessage = 2;
+}
+
+message Profile {
+  string name = 1;
+  bool on = 2;
+  string serial = 3;
+  int64 duration = 4;
+  string expired = 5;
+}
