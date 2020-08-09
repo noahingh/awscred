@@ -305,7 +305,7 @@ func TestInteractor_On(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name: "create a new config",
+			name: "create a new config if it doesn't exist",
 			fields: fields{
 				origCredHandlerFunc: func(ctrl *gomock.Controller) CredFileHandler {
 					m := mock.NewMockCredFileHandler(ctrl)
@@ -327,6 +327,7 @@ func TestInteractor_On(t *testing.T) {
 						Return(map[string]core.Config{}, nil).
 						AnyTimes()
 
+					// expected.
 					m.EXPECT().
 						Write(gomock.Eq(map[string]core.Config{
 							"profile_0": {
