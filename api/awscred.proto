@@ -7,7 +7,7 @@ service AWSCred {
   rpc SetOff(SetOffRequest) returns (SetOffResponse);
   rpc SetConfig(SetConfigRequest) returns (SetConfigResponse);
   rpc SetGenerate(SetGenerateRequest) returns (SetGenerateResponse);
-  rpc GetProfileList(GetProfileListResponse) returns (GetProfileListRequest);
+  rpc GetProfileList(GetProfileListRequest) returns (GetProfileListResponse);
 }
 
 message SetOnRequest { string profile = 1; }

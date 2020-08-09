@@ -116,7 +116,8 @@ func (i *Interactor) Terminate() error {
 	return i.credHandler.Remove()
 }
 
-// On set the profile enabled.
+// On set the profile enabled, and if the configuration doesn't exist 
+// it create a new configuration.
 func (i *Interactor) On(profile string) error {
 	_, ok, err := i.GetOriginalCred(profile)
 	if err != nil {
