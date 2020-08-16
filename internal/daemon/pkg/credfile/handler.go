@@ -63,8 +63,10 @@ func (h *IniHandler) mapCfgToCreds(cfg *ini.File) map[string]core.Cred {
 			switch key.Name() {
 			case keyAwsAccessKeyID:
 				cred.AccessKeyID = sec.Key(keyAwsAccessKeyID).String()
+
 			case keyAwsSecretAccessID:
 				cred.SecretAccessKey = sec.Key(keyAwsSecretAccessID).String()
+
 			case keyAwsSessionToken:
 				cred.SessionToken = sec.Key(keyAwsSessionToken).String()
 			}

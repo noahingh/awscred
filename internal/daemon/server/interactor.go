@@ -36,7 +36,7 @@ func NewInteractor(origCredPath, credPath, confPath string) *Interactor {
 		watcher:         credwatcher.NewService(origCredPath),
 		origCredHandler: credfile.NewIniHandler(true, origCredPath),
 		credHandler:     credfile.NewIniHandler(true, credPath),
-		confHandler:     configfile.NewYamlHandler(confPath),
+		confHandler:     configfile.NewIniHandler(confPath),
 		log: logrus.NewEntry(logrus.New()),
 	}
 }
