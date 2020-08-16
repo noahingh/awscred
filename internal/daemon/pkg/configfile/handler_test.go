@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/hanjunlee/awscred/core"
+	iniutil "github.com/hanjunlee/awscred/internal/daemon/pkg/util/ini"
 	"gopkg.in/ini.v1"
 )
 
@@ -173,7 +174,9 @@ duration = 7200`),
 				filepath: tt.fields.filepath,
 			}
 			got := h.mapConfigsToCfg(tt.args.configs)
-			IniDeepEqual(t, got, tt.want)
+			if err := iniutil.DeepEqual(got, tt.want); err != nil {
+				t.Errorf("IniHandler.mapConfigsToCfg() is not equal: %s", err)
+			}
 		})
 	}
 }

@@ -125,7 +125,7 @@ func (h *IniHandler) mapConfigsToCfg(configs map[string]core.Config) *ini.File {
 		sec.Key(keySerialNumber).SetValue(conf.SerialNumber)
 		sec.Key(keyDurationSecond).SetValue(strconv.FormatInt(conf.DurationSecond, 10))
 
-		if !sec.HasKey(keyAwsAccessKeyID) || !sec.HasKey(keyAwsSecretAccessID) {
+		if conf.Cache.AccessKeyID == "" || conf.Cache.SecretAccessKey  == "" {
 			continue
 		}
 		sec.Key(keyAwsAccessKeyID).Comment = "cached token."
