@@ -13,10 +13,10 @@ import (
 )
 
 var (
-	// OnCommand set the profile enabled
-	OnCommand = &cli.Command{
-		Name:  "on",
-		Usage: "set enabled the session token of profile to be reflected on the awscred credentials.",
+	// OffCommand set the profile disabled
+	OffCommand = &cli.Command{
+		Name:  "off",
+		Usage: "set disabled the session token of profile to be reflected on the awscred credentials.",
 		Flags: []cli.Flag{
 			&cli.IntFlag{
 				Name:    "port",
@@ -43,12 +43,12 @@ var (
 			address = "localhost:" + strconv.Itoa(c.Int("port"))
 			profile = c.Args().Get(0); 
 
-			return on(address, profile)
+			return off(address, profile)
 		},
 	}
 )
 
-func on(address, profile string) error {
+func off(address, profile string) error {
 	log.Debugf("set the conn: %s", address)
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	defer conn.Close()
@@ -61,12 +61,14 @@ func on(address, profile string) error {
 	defer cancel()
 
 	log.Debug("grpc call to the server.")
-	_, err = c.SetOn(ctx, &pb.SetOnRequest{Profile: profile})
+	_, err = c.SetOff(ctx, &pb.SetOffRequest{Profile: profile})
 	if err != nil {
 		return fmt.Errorf("couldn't set enabled: %s", err)
 	}
 
-	fmt.Printf("set \"%s\" enabled\n", profile)
+	fmt.Printf("set \"%s\" disabled\n", profile)
 
 	return nil
 }
+
+

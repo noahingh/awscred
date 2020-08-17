@@ -39,7 +39,7 @@ func (s *Server) SetOn(ctx context.Context, in *pb.SetOnRequest) (*pb.SetOnRespo
 
 // SetOff set the profile disabled.
 func (s *Server) SetOff(ctx context.Context, in *pb.SetOffRequest) (*pb.SetOffResponse, error) {
-	if err := s.Inter.On(in.Profile); err != nil {
+	if err := s.Inter.Off(in.Profile); err != nil {
 		return &pb.SetOffResponse{}, fmt.Errorf("failed to set enabled: %s", err)
 	}
 

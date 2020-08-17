@@ -95,7 +95,10 @@ var (
 )
 
 func run(orig, cred, conf, port string) error {
-	log.Infof("start a daemon: [aws credentials: \"%s\", awscred credentials: \"%s\", awscred config: \"%s\"]", orig, cred, conf)
+	log.Infof(`start a daemon... 
+  - aws credentials: "%s"
+  - awscred credentials: "%s"
+  - awscred config: "%s"`, orig, cred, conf)
 
 	i := server.NewInteractor(orig, cred, conf)
 	i.StartWatch(context.Background())

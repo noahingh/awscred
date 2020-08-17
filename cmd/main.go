@@ -15,6 +15,7 @@ func main() {
 		Commands: []*cli.Command{
 			subcmd.RunCommand,
 			subcmd.OnCommand,
+			subcmd.OffCommand,
 		},
 	}
 
