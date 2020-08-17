@@ -62,7 +62,7 @@ func (s *Server) SetConfig(ctx context.Context, in *pb.SetConfigRequest) (*pb.Se
 		return &pb.SetConfigResponse{}, fmt.Errorf("failed to load the config file: %s", err)
 	}
 	if !ok {
-		s.log.Errorf("failed to get the config, there is no such a profile: %s", in.Profile)
+		s.log.Warnf("failed to get the config, there is no such a profile: %s", in.Profile)
 		return &pb.SetConfigResponse{}, fmt.Errorf("failed to get the config, there is no such a profile: %s", in.Profile)
 	}
 
@@ -84,6 +84,7 @@ func (s *Server) SetConfig(ctx context.Context, in *pb.SetConfigRequest) (*pb.Se
 func (s *Server) SetGenerate(ctx context.Context, in *pb.SetGenerateRequest) (*pb.SetGenerateResponse, error) {
 	err := s.Inter.Gen(in.Profile, in.Token)
 	if err != nil {
+		s.log.Errorf("failed to generate the session token: %s", err)
 		return &pb.SetGenerateResponse{}, fmt.Errorf("failed to generate the session token: %s", err)
 	}
 

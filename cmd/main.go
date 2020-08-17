@@ -17,6 +17,7 @@ func main() {
 			subcmd.OnCommand,
 			subcmd.OffCommand,
 			subcmd.SetCommand,
+			subcmd.GenCommand,
 		},
 	}
 
