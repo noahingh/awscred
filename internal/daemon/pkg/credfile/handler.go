@@ -2,10 +2,11 @@ package credfile
 
 import (
 	"fmt"
-	"log"
+	"io/ioutil"
 	"os"
 
 	"github.com/hanjunlee/awscred/core"
+	log "github.com/sirupsen/logrus"
 	"gopkg.in/ini.v1"
 )
 
@@ -28,12 +29,15 @@ type IniHandler struct {
 
 // NewIniHandler create a new credential handler.
 func NewIniHandler(readOnly bool, path string) *IniHandler {
-	_, err := os.Stat(path)
-	if os.IsNotExist(err) {
-		log.Fatalf("the file doesn't exist: %s", path)
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		log.Warnf("the file doesn't exist, create a new file: %s", path)
+		ioutil.WriteFile(path, []byte(""), 0644)
 	}
 
-	return nil
+	return &IniHandler{
+		readOnly: readOnly,
+		filepath: path,
+	}
 }
 
 // Read read the credential file.
@@ -88,7 +92,7 @@ func (h *IniHandler) Write(creds map[string]core.Cred) error {
 
 func (h *IniHandler) mapCredsToCfg(creds map[string]core.Cred) *ini.File {
 	cfg := ini.Empty()
-	
+
 	for profile, cred := range creds {
 		sec, _ := cfg.NewSection(profile)
 

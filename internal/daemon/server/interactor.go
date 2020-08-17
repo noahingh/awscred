@@ -35,9 +35,9 @@ func NewInteractor(origCredPath, credPath, confPath string) *Interactor {
 		stGenerator:     sts.NewStsGenerator(),
 		watcher:         credwatcher.NewService(origCredPath),
 		origCredHandler: credfile.NewIniHandler(true, origCredPath),
-		credHandler:     credfile.NewIniHandler(true, credPath),
+		credHandler:     credfile.NewIniHandler(false, credPath),
 		confHandler:     configfile.NewIniHandler(confPath),
-		log: logrus.NewEntry(logrus.New()),
+		log:             logrus.NewEntry(logrus.New()),
 	}
 }
 
@@ -59,7 +59,7 @@ func (i *Interactor) runWorker(ctx context.Context) {
 		}
 
 		if event.Op == fsnotify.Remove || event.Op == fsnotify.Rename {
-			i.log.Warn("the file is disappeared.")
+			i.log.Warn("the file is disappeared. if the editor use atomic saves you should restart the daemon(https://github.com/fsnotify/fsnotify/issues/17).")
 			continue
 		}
 
@@ -116,7 +116,7 @@ func (i *Interactor) Terminate() error {
 	return i.credHandler.Remove()
 }
 
-// On set the profile enabled, and if the configuration doesn't exist 
+// On set the profile enabled, and if the configuration doesn't exist
 // it create a new configuration.
 func (i *Interactor) On(profile string) error {
 	_, ok, err := i.GetOriginalCred(profile)

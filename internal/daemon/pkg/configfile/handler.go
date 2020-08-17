@@ -1,12 +1,13 @@
 package configfile
 
 import (
-	"log"
+	"io/ioutil"
 	"os"
 	"strconv"
 	"time"
 
 	"github.com/hanjunlee/awscred/core"
+	log "github.com/sirupsen/logrus"
 	"gopkg.in/ini.v1"
 )
 
@@ -29,9 +30,9 @@ type (
 
 // NewIniHandler create a new ini handler.
 func NewIniHandler(path string) *IniHandler {
-	_, err := os.Stat(path)
-	if os.IsNotExist(err) {
-		log.Fatalf("the file doesn't exist: %s", path)
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		log.Warnf("the file doesn't exist, create a new file: %s", path)
+		ioutil.WriteFile(path, []byte(""), 0644)
 	}
 
 	return &IniHandler{

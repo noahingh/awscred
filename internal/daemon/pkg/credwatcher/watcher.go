@@ -2,10 +2,10 @@ package credwatcher
 
 import (
 	"context"
-	"log"
 	"os"
 
 	"github.com/fsnotify/fsnotify"
+	log "github.com/sirupsen/logrus"
 )
 
 // Service watch the event of file.
@@ -41,14 +41,15 @@ func (s *Service) Watch(ctx context.Context, ch chan<- fsnotify.Event) {
 					return
 				}
 
-				log.Println("watcher send the event:", event)
+				log.Infof("watcher send the event: %s", event)
+
 				ch <- event
 
 			case err, ok := <-watcher.Errors:
 				if !ok {
 					return
 				}
-				log.Println("error:", err)
+				log.Errorf("error: %s", err)
 			}
 		}
 	}()
@@ -58,6 +59,6 @@ func (s *Service) Watch(ctx context.Context, ch chan<- fsnotify.Event) {
 		log.Fatal(err)
 	}
 
-	log.Println("watcher start to watch ...")
+	log.Info("watcher start to watch ...")
 	<-ctx.Done()
 }
