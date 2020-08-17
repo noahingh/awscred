@@ -71,6 +71,7 @@ func (i *Interactor) runWorker(ctx context.Context) {
 
 // Reflect reflect the original credential file, only for enabled profiles.
 func (i *Interactor) Reflect() error {
+	i.log.Info("reflect on the awscred credentials.")
 	return i.reflect()
 }
 
@@ -91,15 +92,18 @@ func (i *Interactor) reflect() error {
 		conf, ok := confs[profile]
 
 		if !ok {
+			i.log.Debug("the config of profile doesn't exist, reflect the original credential: \"%s\".", profile)
 			reflected[profile] = orig
 			continue
 		}
 
 		if !conf.On {
+			i.log.Debug("the config of profile is disabled: \"%s\".", profile)
 			reflected[profile] = orig
 			continue
 		}
 
+		i.log.Debug("the config of profile is disabled: \"%s\".", profile)
 		reflected[profile] = mapConfigToCred(conf)
 	}
 

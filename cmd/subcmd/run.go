@@ -26,31 +26,37 @@ var (
 	// RunCommand run a Daemon.
 	RunCommand = &cli.Command{
 		Name:  "run",
-		Usage: "start a daemon to reflect session tokens on a new credentials",
+		Usage: "start a daemon to reflect session tokens on a new credentials.",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:    "credentials",
 				Aliases: []string{"c"},
 				Value:   filepath.Join(homeDir, ".aws", "credentials"),
-				Usage:   "the path of aws credentials file ",
+				Usage:   "the path of aws credentials file.",
 			},
 			&cli.StringFlag{
 				Name:    "homedir",
-				Aliases: []string{"d"},
+				Aliases: []string{"dir"},
 				Value:   filepath.Join(homeDir, ".awscred"),
-				Usage:   "the path of awscred home directory",
+				Usage:   "the path of awscred home directory.",
 			},
 			&cli.IntFlag{
 				Name:    "port",
 				Aliases: []string{"p"},
 				Value:   defaultPort,
-				Usage:   "the port of server",
+				Usage:   "the port of server.",
 			},
 			&cli.BoolFlag{
 				Name:    "server-mode",
 				Aliases: []string{"s"},
 				Value:   false,
-				Usage:   "run as the gRPC server, not daemon",
+				Usage:   "run as the gRPC server, not daemon.",
+			},
+			&cli.BoolFlag{
+				Name:    "debug",
+				Aliases: []string{"d"},
+				Value:   false,
+				Usage:   "debug mode.",
 			},
 		},
 		Action: func(c *cli.Context) error {
@@ -61,6 +67,10 @@ var (
 				conf     string
 				port     string
 			)
+			if c.Bool("debug") {
+				setDebugMode()
+			}
+
 			if origCred, err = filepath.Abs(c.String("credentials")); err != nil {
 				return fmt.Errorf("failed to the abs path of aws credentials: %s", err)
 			}

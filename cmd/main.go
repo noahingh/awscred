@@ -14,6 +14,7 @@ func main() {
 		Usage: "awscred is a tool to generate a AWS session token and manage it",
 		Commands: []*cli.Command{
 			subcmd.RunCommand,
+			subcmd.OnCommand,
 		},
 	}
 
