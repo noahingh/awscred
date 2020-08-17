@@ -32,7 +32,7 @@ type (
 func NewIniHandler(path string) *IniHandler {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		log.Warnf("the file doesn't exist, create a new file: %s", path)
-		ioutil.WriteFile(path, []byte(""), 0644)
+		ioutil.WriteFile(path, []byte(""), 0600)
 	}
 
 	return &IniHandler{
