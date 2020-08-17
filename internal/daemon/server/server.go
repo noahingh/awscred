@@ -27,6 +27,7 @@ func NewServer(i *Interactor) *Server {
 // SetOn set the profile enabled. It makes to reflect the session token on the credential file.
 func (s *Server) SetOn(ctx context.Context, in *pb.SetOnRequest) (*pb.SetOnResponse, error) {
 	if err := s.Inter.On(in.Profile); err != nil {
+		s.log.Errorf("failed to set the profile enabled: %s", err)
 		return &pb.SetOnResponse{}, fmt.Errorf("failed to set enabled: %s", err)
 	}
 
@@ -34,12 +35,14 @@ func (s *Server) SetOn(ctx context.Context, in *pb.SetOnRequest) (*pb.SetOnRespo
 		return &pb.SetOnResponse{}, fmt.Errorf("failed to reflect: %s", err)
 	}
 
+	s.log.Infof("set the profile enabled: %s", in.Profile)
 	return &pb.SetOnResponse{}, nil
 }
 
 // SetOff set the profile disabled.
 func (s *Server) SetOff(ctx context.Context, in *pb.SetOffRequest) (*pb.SetOffResponse, error) {
 	if err := s.Inter.Off(in.Profile); err != nil {
+		s.log.Errorf("failed to set the profile disabled: %s", err)
 		return &pb.SetOffResponse{}, fmt.Errorf("failed to set enabled: %s", err)
 	}
 
@@ -47,6 +50,7 @@ func (s *Server) SetOff(ctx context.Context, in *pb.SetOffRequest) (*pb.SetOffRe
 		return &pb.SetOffResponse{}, fmt.Errorf("failed to reflect: %s", err)
 	}
 
+	s.log.Infof("set the profile disabled: %s", in.Profile)
 	return &pb.SetOffResponse{}, nil
 }
 
@@ -54,10 +58,12 @@ func (s *Server) SetOff(ctx context.Context, in *pb.SetOffRequest) (*pb.SetOffRe
 func (s *Server) SetConfig(ctx context.Context, in *pb.SetConfigRequest) (*pb.SetConfigResponse, error) {
 	config, ok, err := s.Inter.GetConfig(in.Profile)
 	if err != nil {
-		return &pb.SetConfigResponse{}, fmt.Errorf("failed to get the configuration: %s", err)
+		s.log.Errorf("failed to load the config file: %s", err)
+		return &pb.SetConfigResponse{}, fmt.Errorf("failed to load the config file: %s", err)
 	}
 	if !ok {
-		return &pb.SetConfigResponse{}, fmt.Errorf("failed to set the configuration, set enabled the configuration first")
+		s.log.Errorf("failed to get the config, there is no such a profile: %s", in.Profile)
+		return &pb.SetConfigResponse{}, fmt.Errorf("failed to get the config, there is no such a profile: %s", in.Profile)
 	}
 
 	config.SerialNumber = in.Serial
@@ -66,9 +72,11 @@ func (s *Server) SetConfig(ctx context.Context, in *pb.SetConfigRequest) (*pb.Se
 	// set the configuration.
 	err = s.Inter.SetConfig(in.Profile, config)
 	if err != nil {
+		s.log.Errorf("failed to set the configuraiton: %s", err)
 		return &pb.SetConfigResponse{}, fmt.Errorf("failed to set the configuraiton: %s", err)
 	}
 
+	s.log.Infof("set the config of \"%s\" [serial: \"%s\", duration: \"%d\"]", in.Profile, in.Serial, in.Duration)
 	return &pb.SetConfigResponse{}, nil
 }
 
