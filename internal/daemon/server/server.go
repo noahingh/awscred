@@ -98,6 +98,21 @@ func (s *Server) SetGenerate(ctx context.Context, in *pb.SetGenerateRequest) (*p
 
 // GetProfileList return the information of profiles.
 func (s *Server) GetProfileList(ctx context.Context, in *pb.GetProfileListRequest) (*pb.GetProfileListResponse, error) {
-	// TODO: write the code.
-	return &pb.GetProfileListResponse{Profiles: []*pb.Profile{}}, nil
+	profiles := make([]*pb.Profile, 0)
+	pl, err := s.Inter.GetProfileList()
+	if err != nil {
+		return &pb.GetProfileListResponse{Profiles: profiles}, err
+	}
+
+	for _, p := range pl {
+		profiles = append(profiles, &pb.Profile{
+			Name: p.Name,
+			On: p.On,
+			Serial: p.Serial,
+			Duration: p.Duration,
+			Expired: p.Expired,
+		})
+	}
+	s.log.Info("list profiles")
+	return &pb.GetProfileListResponse{Profiles: profiles}, nil
 }

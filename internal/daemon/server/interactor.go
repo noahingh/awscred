@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/hanjunlee/awscred/core"
@@ -23,6 +24,15 @@ type (
 		credHandler     CredFileHandler
 		confHandler     ConfigFileHandler
 		log             *logrus.Entry
+	}
+
+	// ProfileInfo is the information of profile.
+	ProfileInfo struct {
+		Name     string
+		On       bool
+		Serial   string
+		Duration int64
+		Expired  string
 	}
 )
 
@@ -262,4 +272,50 @@ func (i *Interactor) SetConfig(profile string, conf core.Config) error {
 	}
 
 	return nil
+}
+
+// GetProfileList return profiles.
+func (i *Interactor) GetProfileList() ([]ProfileInfo, error) {
+	const (
+		NA = "N/A"
+	)
+	ps := make([]ProfileInfo, 0)
+
+	creds, err := i.origCredHandler.Read()
+	if err != nil {
+		i.log.Errorf("failed to read the aws credentials: %s", err)
+		return ps, err
+	}
+
+	configs, err := i.confHandler.Read()
+	if err != nil {
+		i.log.Errorf("failed to read the awscred configs: %s", err)
+		return ps, err
+	}
+
+	for profile := range creds {
+		var (
+			pi ProfileInfo
+		)
+		conf, ok := configs[profile]
+		if !ok {
+			pi = ProfileInfo{
+				Name: profile,
+				On:   false,
+			}
+			ps = append(ps, pi)
+			continue
+		}
+
+		pi = ProfileInfo{
+			Name:     profile,
+			On:       conf.On,
+			Serial:   conf.SerialNumber,
+			Duration: conf.DurationSecond,
+			Expired:  conf.Cache.Expiration.Format(time.RFC3339),
+		}
+		ps = append(ps, pi)
+	}
+
+	return ps, nil
 }
