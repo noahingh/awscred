@@ -54,10 +54,10 @@ func NewInteractor(origCredPath, credPath, confPath string) *Interactor {
 // StartWatch start to watch the orignal credential file and
 // reflect changes into the credential file.
 func (i *Interactor) StartWatch(ctx context.Context) {
-	i.log.Info("start to watch.")
+	i.log.Info("start to watch the aws credentials.")
 	go i.watcher.Watch(ctx, i.ch)
 
-	i.log.Info("run a worker.")
+	i.log.Debug("run a worker.")
 	go i.runWorker(ctx)
 }
 

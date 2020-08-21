@@ -66,7 +66,7 @@ func off(address, profile string) error {
 		return fmt.Errorf("couldn't set enabled: %s", err)
 	}
 
-	fmt.Printf("set \"%s\" disabled\n", profile)
+	log.Printf("set the profile disabled: %s\n", profile)
 
 	return nil
 }
