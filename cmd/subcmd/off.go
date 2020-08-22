@@ -16,7 +16,7 @@ var (
 	// OffCommand set the profile disabled
 	OffCommand = &cli.Command{
 		Name:  "off",
-		Usage: "set disabled the session token of profile to be reflected on the awscred credentials.",
+		Usage: "set disabled the session token of profile to be reflected on the awscred credentials.\n   e.g) awscred off PROFILE",
 		Flags: []cli.Flag{
 			&cli.IntFlag{
 				Name:    "port",
@@ -66,7 +66,7 @@ func off(address, profile string) error {
 		return fmt.Errorf("couldn't set enabled: %s", err)
 	}
 
-	log.Printf("set the profile disabled: %s\n", profile)
+	fmt.Printf("set the profile disabled: %s\n", profile)
 
 	return nil
 }

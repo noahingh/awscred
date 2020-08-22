@@ -7,7 +7,6 @@ import (
 	"syscall"
 
 	"github.com/sevlyar/go-daemon"
-	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 )
 
@@ -70,6 +69,6 @@ func terminate(homedir string) error {
 		return fmt.Errorf("Unable to terminate the daemon: %s", err)
 	}
 
-	log.Print("terminate the daemon.")
+	fmt.Println("terminate the daemon.")
 	return nil
 }

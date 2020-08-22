@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	log "github.com/sirupsen/logrus"
 	pb "github.com/hanjunlee/awscred/api"
+	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 	"google.golang.org/grpc"
 )
@@ -16,7 +16,7 @@ var (
 	// OnCommand set the profile enabled
 	OnCommand = &cli.Command{
 		Name:  "on",
-		Usage: "set enabled the session token of profile to be reflected on the awscred credentials.",
+		Usage: "set enabled the session token of profile to be reflected on the awscred credentials.\n   e.g) awscred on PROFILE",
 		Flags: []cli.Flag{
 			&cli.IntFlag{
 				Name:    "port",
@@ -41,7 +41,7 @@ var (
 			}
 
 			address = "localhost:" + strconv.Itoa(c.Int("port"))
-			profile = c.Args().Get(0); 
+			profile = c.Args().Get(0)
 
 			return on(address, profile)
 		},
@@ -66,7 +66,7 @@ func on(address, profile string) error {
 		return fmt.Errorf("couldn't set enabled: %s", err)
 	}
 
-	log.Printf("set the profile enabled: %s\n", profile)
+	fmt.Printf("set the profile enabled: %s\n", profile)
 
 	return nil
 }

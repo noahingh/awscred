@@ -119,7 +119,7 @@ func runDaemon(homedir, orig, cred, conf, port string) error {
 		return err
 	}
 	if d != nil {
-		log.Print("run the daemon successfully.")
+		fmt.Println("run the daemon successfully.")
 		return nil
 	}
 	defer daemonCtx.Release()
