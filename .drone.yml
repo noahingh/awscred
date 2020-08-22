@@ -40,7 +40,6 @@ steps:
         go build 
         -o darwin_amd64/awscred
         -ldflags "-s -w -X github.com/hanjunlee/awscred/cmd.commit=${DRONE_COMMIT} -X github.com/hanjunlee/awscred/cmd.build=${DRONE_BUILD_NUMBER}" 
-        ./cmd/main.go
       - cd darwin_amd64 && tar -czf awscred_darwin_amd64.tar.gz awscred LICENSE README.md  
     depends_on:
       - download
@@ -57,7 +56,6 @@ steps:
         go build 
         -o linux_amd64/awscred
         -ldflags "-s -w -X github.com/hanjunlee/awscred/cmd.commit=${DRONE_COMMIT} -X github.com/hanjunlee/awscred/cmd.build=${DRONE_BUILD_NUMBER}" 
-        ./cmd/main.go
       - cd linux_amd64 && tar -czf awscred_linux_amd64.tar.gz awscred LICENSE README.md  
     depends_on:
       - download
@@ -74,7 +72,6 @@ steps:
         go build 
         -o windows_amd64/awscred.exe 
         -ldflags "-s -w -X github.com/hanjunlee/awscred/cmd.commit=${DRONE_COMMIT} -X github.com/hanjunlee/awscred/cmd.build=${DRONE_BUILD_NUMBER}" 
-        ./cmd/main.go
       - cd windows_amd64 && tar -czf awscred_windows_amd64.tar.gz awscred.exe LICENSE README.md  
     depends_on:
       - download

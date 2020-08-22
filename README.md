@@ -7,7 +7,21 @@ AWSCRED is a tool to generate a AWS session token and manage it easily. The core
 
 ## Install
 
-### Build
+### Source code
+
+```shell
+$ git clone git@github.com:hanjunlee/awscred.git
+$ mv awscred
+$ go install
+```
+
+### Go 
+
+```shell
+$ go get -u github.com/hanjunlee/awscred
+```
+
+### Brew
 
 TBD
 
