@@ -16,7 +16,7 @@ var (
 	// SetCommand set the configuration of profile..
 	SetCommand = &cli.Command{
 		Name:  "set",
-		Usage: "set the configuration which is related with the session token generation.\n   e.g) awscred set --serial SERIAL PROFILE",
+		Usage: "set the configuration which is related with the session token generation. e.g) awscred set --serial SERIAL PROFILE",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:     "serial",

@@ -16,7 +16,7 @@ var (
 	// OnCommand set the profile enabled
 	OnCommand = &cli.Command{
 		Name:  "on",
-		Usage: "set enabled the session token of profile to be reflected on the awscred credentials.\n   e.g) awscred on PROFILE",
+		Usage: "set enabled the session token of profile to be reflected on the awscred credentials. e.g) awscred on PROFILE",
 		Flags: []cli.Flag{
 			&cli.IntFlag{
 				Name:    "port",

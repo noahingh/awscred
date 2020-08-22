@@ -16,7 +16,7 @@ var (
 	// OffCommand set the profile disabled
 	OffCommand = &cli.Command{
 		Name:  "off",
-		Usage: "set disabled the session token of profile to be reflected on the awscred credentials.\n   e.g) awscred off PROFILE",
+		Usage: "set disabled the session token of profile to be reflected on the awscred credentials. e.g) awscred off PROFILE",
 		Flags: []cli.Flag{
 			&cli.IntFlag{
 				Name:    "port",
