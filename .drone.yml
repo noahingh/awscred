@@ -91,6 +91,7 @@ steps:
     image: plugins/github-release
     settings:
       title: ${DRONE_BRANCH}
+      note: check [CHANGELOG.md](https://github.com/hanjunlee/awscred/blob/master/CHANGELOG.md).
       api_key: 
         from_secret: github_token
       files: dist/*
