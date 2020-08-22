@@ -16,7 +16,7 @@ var (
 	// GenCommand generate a new session token.
 	GenCommand = &cli.Command{
 		Name:  "gen",
-		Usage: "generate a new session token and cache the token in the config file.",
+		Usage: "generate a new session token and cache the token in the config file. e.g) awscred gen --code CODE PROFILE",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:     "code",
