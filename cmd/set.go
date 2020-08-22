@@ -1,4 +1,4 @@
-package subcmd
+package cmd
 
 import (
 	"context"
@@ -79,8 +79,8 @@ func set(address, profile, serial string, duration int64) error {
 
 	log.Debug("grpc call to the server.")
 	_, err = c.SetConfig(ctx, &pb.SetConfigRequest{
-		Profile: profile,
-		Serial: serial,
+		Profile:  profile,
+		Serial:   serial,
 		Duration: duration,
 	})
 	if err != nil {

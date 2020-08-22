@@ -1,4 +1,4 @@
-package subcmd
+package cmd
 
 import (
 	"github.com/mitchellh/go-homedir"

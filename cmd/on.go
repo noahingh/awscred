@@ -1,4 +1,4 @@
-package subcmd
+package cmd
 
 import (
 	"context"
@@ -13,18 +13,11 @@ import (
 )
 
 var (
-	// GenCommand generate a new session token.
-	GenCommand = &cli.Command{
-		Name:  "gen",
-		Usage: "generate a new session token and cache the token in the config file. e.g) awscred gen --code CODE PROFILE",
+	// OnCommand set the profile enabled
+	OnCommand = &cli.Command{
+		Name:  "on",
+		Usage: "set enabled the session token of profile to be reflected on the awscred credentials. e.g) awscred on PROFILE",
 		Flags: []cli.Flag{
-			&cli.StringFlag{
-				Name:     "code",
-				Aliases:  []string{"c"},
-				Value:    "",
-				Usage:    "The  value  provided  by  the MFA device.",
-				Required: true,
-			},
 			&cli.IntFlag{
 				Name:    "port",
 				Aliases: []string{"p"},
@@ -42,7 +35,6 @@ var (
 			var (
 				address string
 				profile string
-				code    string
 			)
 			if c.Bool("debug") {
 				setDebugMode()
@@ -50,14 +42,13 @@ var (
 
 			address = "localhost:" + strconv.Itoa(c.Int("port"))
 			profile = c.Args().Get(0)
-			code = c.String("code")
 
-			return gen(address, profile, code)
+			return on(address, profile)
 		},
 	}
 )
 
-func gen(address, profile, code string) error {
+func on(address, profile string) error {
 	log.Debugf("set the conn: %s", address)
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	defer conn.Close()
@@ -66,18 +57,16 @@ func gen(address, profile, code string) error {
 	}
 
 	c := pb.NewAWSCredClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
 	log.Debug("grpc call to the server.")
-	_, err = c.SetGenerate(ctx, &pb.SetGenerateRequest{
-		Profile: profile,
-		Token:   code,
-	})
+	_, err = c.SetOn(ctx, &pb.SetOnRequest{Profile: profile})
 	if err != nil {
-		return fmt.Errorf("couldn't generate a session token: %s", err)
+		return fmt.Errorf("couldn't set enabled: %s", err)
 	}
 
-	fmt.Printf("generate a session token.\n")
+	fmt.Printf("set the profile enabled: %s\n", profile)
+
 	return nil
 }

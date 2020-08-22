@@ -1,4 +1,4 @@
-package subcmd
+package cmd
 
 import (
 	"context"
@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	log "github.com/sirupsen/logrus"
 	pb "github.com/hanjunlee/awscred/api"
+	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 	"google.golang.org/grpc"
 )
@@ -41,7 +41,7 @@ var (
 			}
 
 			address = "localhost:" + strconv.Itoa(c.Int("port"))
-			profile = c.Args().Get(0); 
+			profile = c.Args().Get(0)
 
 			return off(address, profile)
 		},
@@ -70,5 +70,3 @@ func off(address, profile string) error {
 
 	return nil
 }
-
-
