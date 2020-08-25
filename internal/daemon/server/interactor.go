@@ -102,18 +102,18 @@ func (i *Interactor) reflect() error {
 		conf, ok := confs[profile]
 
 		if !ok {
-			i.log.Debug("the config of profile doesn't exist, reflect the original credential: \"%s\".", profile)
+			i.log.Debugf("the config of profile doesn't exist, reflect the original credential: \"%s\".", profile)
 			reflected[profile] = orig
 			continue
 		}
 
 		if !conf.On {
-			i.log.Debug("the config of profile is disabled: \"%s\".", profile)
+			i.log.Debugf("the config of profile is disabled: \"%s\".", profile)
 			reflected[profile] = orig
 			continue
 		}
 
-		i.log.Debug("the config of profile is disabled: \"%s\".", profile)
+		i.log.Debugf("the config of profile is disabled: \"%s\".", profile)
 		reflected[profile] = mapConfigToCred(conf)
 	}
 

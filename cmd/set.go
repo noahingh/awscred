@@ -18,18 +18,23 @@ var (
 		Name:  "set",
 		Usage: "set the configuration which is related with the session token generation. e.g) awscred set --serial SERIAL PROFILE",
 		Flags: []cli.Flag{
+			&cli.BoolFlag{
+				Name:  "on",
+				Value: false,
+				Usage: "set enalbed after setting.",
+			},
 			&cli.StringFlag{
 				Name:     "serial",
 				Aliases:  []string{"s"},
 				Value:    "",
-				Usage:    "The identification number of the MFA device that is associated with the IAM user.",
+				Usage:    "the identification number of the MFA device that is associated with the IAM user.",
 				Required: true,
 			},
 			&cli.IntFlag{
 				Name:    "duration",
 				Aliases: []string{"c"},
 				Value:   43200,
-				Usage:   "The  duration, in seconds, that the credentials should remain valid.",
+				Usage:   "the  duration, in seconds, that the credentials should remain valid.",
 			},
 			&cli.IntFlag{
 				Name:    "port",
@@ -60,7 +65,14 @@ var (
 			serial = c.String("serial")
 			duration = c.Int64("duration")
 
-			return set(address, profile, serial, duration)
+			if err := set(address, profile, serial, duration); err != nil {
+				return err
+			}
+
+			if c.Bool("on") {
+				return on(address, profile)
+			}
+			return nil
 		},
 	}
 )
@@ -87,6 +99,6 @@ func set(address, profile, serial string, duration int64) error {
 		return fmt.Errorf("couldn't configure: %s", err)
 	}
 
-	fmt.Printf("set the config of \"%s\" [serial: \"%s\", duration: \"%d\"] \n", profile, serial, duration)
+	fmt.Printf("set the config [serial: \"%s\", duration: \"%d\"]: %s \n", serial, duration, profile)
 	return nil
 }

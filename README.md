@@ -4,7 +4,6 @@
 
 AWSCRED is a tool to generate a AWS session token and manage it easily. The core concept of this tool is that **it reflects session tokens on a new credentials file, not aws credentials**, it doesn't intrude the aws credentials file.
 
-
 ## Install
 
 ### Source code
@@ -36,11 +35,8 @@ $ awscred run
 2. Set up the profile - It configures the serial number and the duration. These values are used as options to generate a session token.
 
 ```shell
-# set the profile enabled
-$ awscred on PROFILE
-
 # set up the configuration
-$ awscred set --serial arn:aws:iam::XXXXXXXX:mfa/USER PROFILE
+$ awscred set --on --serial arn:aws:iam::XXXXXXXX:mfa/USER PROFILE
 
 $ awscred info
 NAME         ON       SERIAL                                    DURATION    EXPIRED

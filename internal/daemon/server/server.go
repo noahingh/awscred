@@ -56,14 +56,10 @@ func (s *Server) SetOff(ctx context.Context, in *pb.SetOffRequest) (*pb.SetOffRe
 
 // SetConfig set the configuration of the profile.
 func (s *Server) SetConfig(ctx context.Context, in *pb.SetConfigRequest) (*pb.SetConfigResponse, error) {
-	config, ok, err := s.Inter.GetConfig(in.Profile)
+	config, _, err := s.Inter.GetConfig(in.Profile)
 	if err != nil {
 		s.log.Errorf("failed to load the config file: %s", err)
 		return &pb.SetConfigResponse{}, fmt.Errorf("failed to load the config file: %s", err)
-	}
-	if !ok {
-		s.log.Warnf("failed to get the config, there is no such a profile: %s", in.Profile)
-		return &pb.SetConfigResponse{}, fmt.Errorf("failed to get the config, there is no such a profile: %s", in.Profile)
 	}
 
 	config.SerialNumber = in.Serial
