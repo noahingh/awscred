@@ -20,7 +20,7 @@ trigger:
 ---
 kind: pipeline
 type: docker
-name: test
+name: master
 
 steps:
   - name: lint
