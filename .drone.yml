@@ -20,6 +20,27 @@ trigger:
 ---
 kind: pipeline
 type: docker
+name: test
+
+steps:
+  - name: lint
+    image: golang:1.13
+    commands:
+      - go vet ./...
+
+  - name: unit-test
+    image: golang:1.13
+    commands:
+      - go test -coverprofile=coverage.out ./...
+
+trigger:
+  event:
+    - push
+  branch:
+    - master
+---
+kind: pipeline
+type: docker
 name: release
 
 steps:
