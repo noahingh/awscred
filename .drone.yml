@@ -122,5 +122,5 @@ steps:
       - aggregater
 
 trigger:
-  branch:
-    - release-*
+  ref:
+    - refs/tags/v*
