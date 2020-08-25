@@ -111,7 +111,7 @@ steps:
   - name: release
     image: plugins/github-release
     settings:
-      title: ${DRONE_TAG}
+      title: release-${DRONE_TAG}
       note: check [CHANGELOG.md](https://github.com/hanjunlee/awscred/blob/master/CHANGELOG.md).
       api_key: 
         from_secret: github_token
