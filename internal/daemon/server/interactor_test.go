@@ -153,6 +153,7 @@ func TestInteractor_reflect(t *testing.T) {
 
 					return m
 				},
+				log: logrus.NewEntry(logrus.New()),
 			},
 			wantErr: false,
 		},
@@ -214,6 +215,7 @@ func TestInteractor_reflect(t *testing.T) {
 
 					return m
 				},
+				log: logrus.NewEntry(logrus.New()),
 			},
 			wantErr: false,
 		},
