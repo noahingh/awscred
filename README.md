@@ -77,4 +77,4 @@ $ unset AWS_SHARED_CREDENTIALS_FILE
 
 ## CHANGELOG
 
-[Changelogs](./CHANGELOG)
+[Changelogs](./CHANGELOG.md)
