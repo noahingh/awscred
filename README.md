@@ -1,5 +1,7 @@
 # AWSCRED
 
+![awscred](./docs/awscred.jpg)
+
 ---
 
 AWSCRED is a tool to generate a AWS session token and manage it easily. The core concept of this tool is that **it reflects session tokens on a new credentials file, not aws credentials**, it doesn't intrude the aws credentials file.
