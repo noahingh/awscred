@@ -9,6 +9,7 @@
 ## Concept 
 
 The main concept of Awscred is to handle session token by creating a new AWS `credentials` file. **It helps you by abstracting the process which is to generate a new session token and to share it**. 
+<br/>
 
 Suppose we need a session token and we want to store it. The first step is to generate a session token with `aws` command, when you run the command it returns json-format response like below ([aws doc](https://aws.amazon.com/premiumsupport/knowledge-center/authenticate-mfa-cli/)). 
 
@@ -36,8 +37,9 @@ aws_session_token = example-session-Token-as-in-returned-output
 ```
 
 It is very complicated and also it is a toil because you have to do same process when session token is expired. 
+<br/>
 
-Awscred makes you can handle session token without these complicated steps. What is you have to prepare is set the serial number of IAM user. It makes you don’t have to put the serial number as parameter when you generate because it’s stored at the `config` file of Awscred.
+Awscred makes you can handle session token without these complicated steps. What is you have to prepare is setting the serial number of IAM user, and after this setting you don’t need to put the serial number anymore because it’s stored at the `config` file of Awscred.
 
 ```bash
 $ awscred set --on --serial SERIAL 
@@ -51,8 +53,9 @@ $ export ...
 ```
 
 Awscred will set session token on the `credentials` file of Awscred (not AWS) automatically.  
+<br/>
 
-You can get some benefits by using Awscred. **The best thing is it doesn’t intrude your AWS `credentials` by creating another**. In above example, you have to set session token with another profile(`default-mfa`) on AWS `credentials` to share it, but Awscred set session token with the same profile so you don’t need to change your profile 🙂.  And Awscred copies access keys of other profiles on the Awscred `credentials` file so that there’s no side effect to replace `credentials` file.
+You can get some benefits by using Awscred. **The best thing is it doesn’t intrude your AWS `credentials`**. In above example, you have to set session token with new profile(`default-mfa`) on AWS `credentials` to share it, but Awscred set session token with the same profile so you don’t need to change your profile 🙂.  And Awscred copies access keys of other profiles on the Awscred `credentials` file so that there’s no side effect to replace `credentials` file.
 
 ## How it works?
 
