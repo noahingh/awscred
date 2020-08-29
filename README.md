@@ -6,6 +6,15 @@
 
 ---
 
+## Index
+
+- [Concept](#concept)
+- [How it works?](#how-it-works)
+- [Install](#install)
+- [Usage](#usage)
+- [License](#license)
+- [Changelog](#changelog)
+
 ## Concept 
 
 The main concept of Awscred is to handle session token by creating a new AWS `credentials` file. **It helps you by abstracting the process which is to generate a new session token and to share it**. 
