@@ -6,7 +6,60 @@
 
 ---
 
-AWSCRED is a tool to generate a AWS session token and manage it easily. The core concept of this tool is that **it reflects session tokens on a new credentials file, not aws credentials**, it doesn't intrude the aws credentials file.
+## Concept 
+
+The main concept of Awscred is to handle session token by creating a new AWS `credentials` file. **It helps you by abstracting the process which is to generate a new session token and to share it**. 
+
+Suppose we need a session token and we want to store it. The first step is to generate a session token with `aws` command, when you run the command it returns json-format response like below ([aws doc](https://aws.amazon.com/premiumsupport/knowledge-center/authenticate-mfa-cli/)). 
+
+```bash
+$ aws sts get-session-token --serial-number arn-of-the-mfa-device --token-code code-from-token 
+
+{
+    "Credentials": {
+        "SecretAccessKey": "secret-access-key",
+        "SessionToken": "temporary-session-token",
+        "Expiration": "expiration-date-time",
+        "AccessKeyId": "access-key-id"
+    }
+}
+```
+
+After generation, you have to set session token on your AWS `credentials` file if you need to sharing it, or you have to export values as environment variables.
+
+```bash
+# credentials file
+[defuault-mfa]
+aws_access_key_id = example-access-key-as-in-returned-output
+aws_secret_access_key = example-secret-access-key-as-in-returned-output
+aws_session_token = example-session-Token-as-in-returned-output
+```
+
+It is very complicated and also it is a toil because you have to do same process when session token is expired. 
+
+Awscred makes you can handle session token without these complicated steps. What is you have to prepare is set the serial number of IAM user. It makes you don’t have to put the serial number as parameter when you generate because it’s stored at the `config` file of Awscred.
+
+```bash
+$ awscred set --on --serial SERIAL 
+```
+
+After configuration, let’s generate session token. 
+
+```bash
+$ awscred gen --code CODE
+$ export ...
+```
+
+Awscred will set session token on the `credentials` file of Awscred (not AWS) automatically.  
+
+You can get some benefits by using Awscred. **The best thing is it doesn’t intrude your AWS `credentials` by creating another**. In above example, you have to set session token with another profile(`default-mfa`) on AWS `credentials` to share it, but Awscred set session token with the same profile so you don’t need to change your profile 🙂.  And Awscred copies access keys of other profiles on the Awscred `credentials` file so that there’s no side effect to replace `credentials` file.
+
+## How it works?
+
+- Daemon: it is running in background and keep reflect AWS credentials on Awscred credentials.
+- Client: it configures settings and send a request.
+
+![how it works](./docs/how-it-works.png)
 
 ## Install
 
