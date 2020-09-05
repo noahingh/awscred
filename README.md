@@ -57,7 +57,8 @@ After configuration, let’s generate session token.
 
 ```bash
 $ awscred gen --code CODE
-$ export ...
+
+$ $(awscred export)
 ```
 
 Awscred will set session token on the `credentials` file of Awscred (not AWS) automatically.  
@@ -120,7 +121,7 @@ PROFILE      true     arn:aws:iam::XXXXXXXX:mfa/USER PROFILE    43200       2020
 4. Modify the location of shared credentials file - By changing [the location of shared credentials file](https://docs.aws.amazon.com/cli/latest/topic/config-vars.html#the-shared-credentials-file), `aws` command use the new credentials file. 
 
 ```shell
-export AWS_SHARED_CREDENTIALS_FILE="~/.awscred/credentials"
+$(awscred export)
 ```
 
 5. Terminate 
