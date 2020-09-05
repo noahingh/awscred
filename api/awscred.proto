@@ -8,6 +8,8 @@ service AWSCred {
   rpc SetConfig(SetConfigRequest) returns (SetConfigResponse);
   rpc SetGenerate(SetGenerateRequest) returns (SetGenerateResponse);
   rpc GetProfileList(GetProfileListRequest) returns (GetProfileListResponse);
+  rpc GetCredentialsFile (GetCredentialsFileRequest) returns (GetCredentialsFileResponse);
+  rpc GetCredentialsProfile (GetCredentialsProfileRequest) returns (GetCredentialsProfileResponse);
 }
 
 message SetOnRequest { string profile = 1; }
@@ -43,4 +45,20 @@ message Profile {
   string serial = 3;
   int64 duration = 4;
   string expired = 5;
+}
+
+message GetCredentialsFileRequest {}
+
+message GetCredentialsFileResponse {
+  string path = 1;
+}
+
+message GetCredentialsProfileRequest {
+  string profile = 1;
+}
+
+message GetCredentialsProfileResponse {
+  string accessKeyID = 1;
+  string secretAccessKey = 2;
+  string sessionToken = 3;
 }
