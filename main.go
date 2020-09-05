@@ -26,6 +26,7 @@ func main() {
 			cmd.GenCommand,
 			cmd.InfoCommand,
 			cmd.ExportCommand,
+			cmd.PingCommand,
 		},
 	}
 
