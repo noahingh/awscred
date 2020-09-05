@@ -80,6 +80,7 @@ $ go install
 
 ```shell
 $ go get -u github.com/hanjunlee/awscred
+$ go install github.com/hanjunlee/awscred
 ```
 
 ### Brew
