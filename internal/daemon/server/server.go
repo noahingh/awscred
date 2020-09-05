@@ -102,13 +102,29 @@ func (s *Server) GetProfileList(ctx context.Context, in *pb.GetProfileListReques
 
 	for _, p := range pl {
 		profiles = append(profiles, &pb.Profile{
-			Name: p.Name,
-			On: p.On,
-			Serial: p.Serial,
+			Name:     p.Name,
+			On:       p.On,
+			Serial:   p.Serial,
 			Duration: p.Duration,
-			Expired: p.Expired,
+			Expired:  p.Expired,
 		})
 	}
 	s.log.Info("list profiles")
 	return &pb.GetProfileListResponse{Profiles: profiles}, nil
+}
+
+// GetCredentialsFile return the path of file.
+func (s *Server) GetCredentialsFile(ctx context.Context, in *pb.GetCredentialsFileRequest) (*pb.GetCredentialsFileResponse, error) {
+	path := s.Inter.GetCredentialFile()
+	return &pb.GetCredentialsFileResponse{Path: path}, nil
+}
+
+// GetCredentialsProfile return the credentials of profile.
+func (s *Server) GetCredentialsProfile(ctx context.Context, in *pb.GetCredentialsProfileRequest) (*pb.GetCredentialsProfileResponse, error) {
+	cred := s.Inter.GetCredentialProfile(in.Profile)
+	return &pb.GetCredentialsProfileResponse{
+		AccessKeyID:     cred.AccessKeyID,
+		SecretAccessKey: cred.SecretAccessKey,
+		SessionToken:    cred.SessionToken,
+	}, nil
 }

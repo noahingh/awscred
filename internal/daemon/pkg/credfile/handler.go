@@ -116,3 +116,8 @@ func (h *IniHandler) Remove() error {
 	err := os.Remove(h.filepath)
 	return err
 }
+
+// GetFilePath returns the path of file.
+func (h *IniHandler) GetFilePath() string {
+	return h.filepath
+}

@@ -319,3 +319,25 @@ func (i *Interactor) GetProfileList() ([]ProfileInfo, error) {
 
 	return ps, nil
 }
+
+// GetCredentialFile return the path of awscred credentials.
+func (i *Interactor) GetCredentialFile() string {
+	return i.credHandler.GetFilePath()
+}
+
+// GetCredentialProfile returns the credential of profile.
+func (i *Interactor) GetCredentialProfile(profile string) core.Cred {
+	creds, err := i.credHandler.Read()
+	if err != nil {
+		i.log.Errorf("couldn't read credentials: %s", err)
+		return core.Cred{}
+	}
+
+	c, ok := creds[profile]
+	if !ok {
+		i.log.Warnf("there's no such a profile: %s", profile)
+		return core.Cred{}
+	}
+
+	return c
+}
