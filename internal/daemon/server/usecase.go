@@ -22,6 +22,7 @@ type (
 		Read() (map[string]core.Cred, error)
 		Write(map[string]core.Cred) error
 		Remove() error
+		GetFilePath() string
 	}
 
 	// ConfigFileHandler is the manager read and write a config file.

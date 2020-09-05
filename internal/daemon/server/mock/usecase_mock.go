@@ -151,6 +151,20 @@ func (mr *MockCredFileHandlerMockRecorder) Remove() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Remove", reflect.TypeOf((*MockCredFileHandler)(nil).Remove))
 }
 
+// GetFilePath mocks base method
+func (m *MockCredFileHandler) GetFilePath() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetFilePath")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// GetFilePath indicates an expected call of GetFilePath
+func (mr *MockCredFileHandlerMockRecorder) GetFilePath() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFilePath", reflect.TypeOf((*MockCredFileHandler)(nil).GetFilePath))
+}
+
 // MockConfigFileHandler is a mock of ConfigFileHandler interface
 type MockConfigFileHandler struct {
 	ctrl     *gomock.Controller

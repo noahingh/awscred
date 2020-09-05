@@ -787,3 +787,152 @@ func TestInteractor_SetCred(t *testing.T) {
 		})
 	}
 }
+
+func TestInteractor_GetCredentialFile(t *testing.T) {
+	type fields struct {
+		ch              chan fsnotify.Event
+		stGenerator     SessionTokenGenerator
+		watcher         FileWatcher
+		origCredHandler CredFileHandler
+		credHandlerFunc CredFileHandlerFunc
+		confHandler     ConfigFileHandler
+		log             *logrus.Entry
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   string
+	}{
+		{
+			name: "return the path",
+			fields: fields{
+				credHandlerFunc: func(ctrl *gomock.Controller) CredFileHandler {
+					m := mock.NewMockCredFileHandler(ctrl)
+
+					m.EXPECT().GetFilePath().Return("foo")
+
+					return m
+				},
+			},
+			want: "foo",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+
+			i := &Interactor{
+				ch:              tt.fields.ch,
+				stGenerator:     tt.fields.stGenerator,
+				watcher:         tt.fields.watcher,
+				origCredHandler: tt.fields.origCredHandler,
+				credHandler:     tt.fields.credHandlerFunc(ctrl),
+				confHandler:     tt.fields.confHandler,
+				log:             tt.fields.log,
+			}
+			if got := i.GetCredentialFile(); got != tt.want {
+				t.Errorf("Interactor.GetCredentialFile() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestInteractor_GetCredentialProfile(t *testing.T) {
+	type fields struct {
+		ch              chan fsnotify.Event
+		stGenerator     SessionTokenGenerator
+		watcher         FileWatcher
+		origCredHandler CredFileHandler
+		credHandlerFunc CredFileHandlerFunc
+		confHandler     ConfigFileHandler
+		log             *logrus.Entry
+	}
+	type args struct {
+		profile string
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   core.Cred
+	}{
+		{
+			name: "return the credential of profile",
+			fields: fields{
+				credHandlerFunc: func(ctrl *gomock.Controller) CredFileHandler {
+					m := mock.NewMockCredFileHandler(ctrl)
+
+					m.EXPECT().
+						Read().
+						Return(map[string]core.Cred{
+							"profile_0": {
+								AccessKeyID:     "key",
+								SecretAccessKey: "secret",
+								SessionToken:    "token",
+							},
+						}, nil)
+
+					return m
+				},
+				log: logrus.NewEntry(logrus.New()),
+			},
+			args: args{
+				profile: "profile_0",
+			},
+			want: core.Cred{
+				AccessKeyID:     "key",
+				SecretAccessKey: "secret",
+				SessionToken:    "token",
+			},
+		},
+		{
+			name: "return the empty credential if the profile doesn't exist",
+			fields: fields{
+				credHandlerFunc: func(ctrl *gomock.Controller) CredFileHandler {
+					m := mock.NewMockCredFileHandler(ctrl)
+
+					m.EXPECT().
+						Read().
+						Return(map[string]core.Cred{
+							"profile_0": {
+								AccessKeyID:     "key",
+								SecretAccessKey: "secret",
+								SessionToken:    "token",
+							},
+						}, nil)
+
+					return m
+				},
+				log: logrus.NewEntry(logrus.New()),
+			},
+			args: args{
+				profile: "not_exist",
+			},
+			want: core.Cred{
+				AccessKeyID:     "",
+				SecretAccessKey: "",
+				SessionToken:    "",
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+
+			i := &Interactor{
+				ch:              tt.fields.ch,
+				stGenerator:     tt.fields.stGenerator,
+				watcher:         tt.fields.watcher,
+				origCredHandler: tt.fields.origCredHandler,
+				credHandler:     tt.fields.credHandlerFunc(ctrl),
+				confHandler:     tt.fields.confHandler,
+				log:             tt.fields.log,
+			}
+			if got := i.GetCredentialProfile(tt.args.profile); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Interactor.GetCredentialProfile() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

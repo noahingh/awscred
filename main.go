@@ -25,6 +25,7 @@ func main() {
 			cmd.SetCommand,
 			cmd.GenCommand,
 			cmd.InfoCommand,
+			cmd.ExportCommand,
 		},
 	}
 
