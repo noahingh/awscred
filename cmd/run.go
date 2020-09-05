@@ -10,8 +10,10 @@ import (
 	"strconv"
 	"syscall"
 
+	hc "google.golang.org/grpc/health/grpc_health_v1"
 	pb "github.com/hanjunlee/awscred/api"
 	"github.com/hanjunlee/awscred/internal/daemon/server"
+	"github.com/hanjunlee/awscred/internal/daemon/health"
 	"github.com/sevlyar/go-daemon"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
@@ -213,5 +215,6 @@ func getServer(orig, cred, conf, port string) *grpc.Server {
 
 	s := grpc.NewServer()
 	pb.RegisterAWSCredServer(s, server.NewServer(i))
+	hc.RegisterHealthServer(s, health.NewServer())
 	return s
 }
