@@ -56,12 +56,12 @@ steps:
       GOOS: darwin
       GOARCH: amd64
     commands:
-      - mkdir darwin_amd64 && cp LICENSE README.md darwin_amd64
+      - mkdir darwin_amd64 && cp   darwin_amd64
       - >
         go build 
         -o darwin_amd64/awscred
         -ldflags "-s -w -X github.com/hanjunlee/awscred/cmd.commit=${DRONE_COMMIT} -X github.com/hanjunlee/awscred/cmd.build=${DRONE_BUILD_NUMBER}" 
-      - cd darwin_amd64 && tar -czf awscred_darwin_amd64.tar.gz awscred LICENSE README.md  
+      - cd darwin_amd64 && tar -czf awscred_darwin_amd64.tar.gz awscred    
     depends_on:
       - download
 
@@ -72,12 +72,12 @@ steps:
       GOOS: linux
       GOARCH: amd64
     commands:
-      - mkdir linux_amd64 && cp LICENSE README.md linux_amd64
+      - mkdir linux_amd64 && cp   linux_amd64
       - >
         go build 
         -o linux_amd64/awscred
         -ldflags "-s -w -X github.com/hanjunlee/awscred/cmd.commit=${DRONE_COMMIT} -X github.com/hanjunlee/awscred/cmd.build=${DRONE_BUILD_NUMBER}" 
-      - cd linux_amd64 && tar -czf awscred_linux_amd64.tar.gz awscred LICENSE README.md  
+      - cd linux_amd64 && tar -czf awscred_linux_amd64.tar.gz awscred    
     depends_on:
       - download
 
@@ -88,12 +88,12 @@ steps:
       GOOS: windows
       GOARCH: amd64
     commands:
-      - mkdir windows_amd64 && cp LICENSE README.md windows_amd64
+      - mkdir windows_amd64 && cp   windows_amd64
       - >
         go build 
         -o windows_amd64/awscred.exe 
         -ldflags "-s -w -X github.com/hanjunlee/awscred/cmd.commit=${DRONE_COMMIT} -X github.com/hanjunlee/awscred/cmd.build=${DRONE_BUILD_NUMBER}" 
-      - cd windows_amd64 && tar -czf awscred_windows_amd64.tar.gz awscred.exe LICENSE README.md  
+      - cd windows_amd64 && tar -czf awscred_windows_amd64.tar.gz awscred.exe    
     depends_on:
       - download
 

@@ -68,21 +68,25 @@ You can get some benefits by using Awscred. **The best thing is it doesn’t int
 
 ## Install
 
-### Source code
+### Linux
+
+Download and Install in Linux
 
 ```shell
-$ git clone git@github.com:hanjunlee/awscred.git
-$ mv awscred
-$ go install
+$ curl -L https://github.com/hanjunlee/awscred/releases/latest/download/awscred_linux_amd64.tar.gz | tar zx
+$ sudo install -t /usr/local/bin awscred
 ```
 
-### Go 
+### OSX
+
+Download and Install in OSX
 
 ```shell
-$ go get -u github.com/hanjunlee/awscred
+$ curl -L https://github.com/hanjunlee/awscred/releases/latest/download/awscred_darwin_amd64.tar.gz | tar zx
+$ sudo cp awscred /usr/local/bin
 ```
 
-### Brew
+### Window
 
 TBD
 
