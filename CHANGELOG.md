@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+### Added
+
+- Support brew.
+
 ## 0.2.0
 
 ### Added
