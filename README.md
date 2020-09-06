@@ -105,7 +105,7 @@ TBD
 $ awscred run
 ```
 
-2. Set up the profile - It configures the serial number and the duration. These values are used as options to generate a session token.
+2. Configure the profile - It configures the serial number and the duration. These values are used as options to generate a session token.
 
 ```shell
 # set up the configuration
@@ -129,7 +129,7 @@ PROFILE      true     arn:aws:iam::XXXXXXXX:mfa/USER PROFILE    43200       2020
 ...
 ```
 
-4. Modify the location of shared credentials file - By changing [the location of shared credentials file](https://docs.aws.amazon.com/cli/latest/topic/config-vars.html#the-shared-credentials-file), `aws` command use the new credentials file. 
+4. Set `AWS_SHARED_CREDENTIALS_FILE` environment variable - By set [the environment of shared credentials file](https://docs.aws.amazon.com/cli/latest/topic/config-vars.html#the-shared-credentials-file) Awscred `credentials` file, `aws` command use the new credentials file. 
 
 ```shell
 $(awscred export)
