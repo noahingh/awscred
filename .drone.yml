@@ -56,7 +56,7 @@ steps:
       GOOS: darwin
       GOARCH: amd64
     commands:
-      - mkdir darwin_amd64 && cp   darwin_amd64
+      - mkdir darwin_amd64 
       - >
         go build 
         -o darwin_amd64/awscred
@@ -72,7 +72,7 @@ steps:
       GOOS: linux
       GOARCH: amd64
     commands:
-      - mkdir linux_amd64 && cp   linux_amd64
+      - mkdir linux_amd64 
       - >
         go build 
         -o linux_amd64/awscred
@@ -88,7 +88,7 @@ steps:
       GOOS: windows
       GOARCH: amd64
     commands:
-      - mkdir windows_amd64 && cp   windows_amd64
+      - mkdir windows_amd64 
       - >
         go build 
         -o windows_amd64/awscred.exe 
