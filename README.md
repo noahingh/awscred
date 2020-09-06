@@ -86,6 +86,13 @@ $ curl -L https://github.com/hanjunlee/awscred/releases/latest/download/awscred_
 $ sudo cp awscred /usr/local/bin
 ```
 
+Or Install in OSX by using Brew
+
+```shell
+$ brew tap hanjunlee/awscred
+$ brew install awscred
+```
+
 ### Window
 
 TBD
